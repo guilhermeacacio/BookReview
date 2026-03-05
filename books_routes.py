@@ -12,14 +12,14 @@ book_router = Blueprint('book', __name__, url_prefix='/book')
 async def home():
     return {"message": "Hello world! Book Routes!"}
 
-#Cadastrar um livro
+#Register a new book
 @book_router.post("/add_book")
-@jwt_required()
+@jwt_required() #Decorator to make the user athentication using the Token
 async def add_book():
 
-    db: Session = get_db()
+    db: Session = get_db() #Open the DB
 
-    user_id = get_jwt_identity()
+    user_id = get_jwt_identity() #Check the user permission (if the user have the token the access will be allowed)
 
     if not user_id:
         return jsonify({"error": "Unauthorized"}), 401
@@ -51,7 +51,7 @@ async def add_book():
     finally:
         close_db()
 
-#Deletar um livro
+#Delete a book
 @book_router.delete("/delete_book/<int:book_id>")
 @jwt_required()
 async def delete_book(book_id: int):
@@ -83,7 +83,7 @@ async def delete_book(book_id: int):
 
     return jsonify({"message": "Book deleted successfully!"}), 200 
 
-#Atualizar um livro
+#Update a book by ID
 @book_router.put("/update_book/<int:book_id>")
 @jwt_required()
 async def update_book(book_id: int):
@@ -125,7 +125,7 @@ async def update_book(book_id: int):
 
     return jsonify({"message": f"Book with ID {book_id} updated successfully!"}), 200
 
-#Listar um livro específico
+#List a specific book (search a book by id)
 @book_router.get("/get_book/<int:book_id>")
 @jwt_required()
 async def get_book(book_id):
@@ -151,7 +151,7 @@ async def get_book(book_id):
 
     return jsonify(result), 200
 
-#Listar todos os livros
+#List all the books
 @book_router.get("/list_books")
 @jwt_required()
 async def list_books():
@@ -174,4 +174,5 @@ async def list_books():
     return jsonify({
             "message": "List of all books retrieved successfully!", 
             "books": result
+
             }), 200

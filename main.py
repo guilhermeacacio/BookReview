@@ -25,9 +25,6 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=int(os.getenv("ACCESS
 
 jwt = JWTManager(app)
 
-login_manager = LoginManager(app)
-login_manager.login_view = 'auth.login'
-
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
@@ -36,4 +33,5 @@ from auth_routes import auth_router
 from books_routes import book_router
 
 app.register_blueprint(auth_router)
+
 app.register_blueprint(book_router)
